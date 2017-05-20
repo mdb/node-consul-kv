@@ -2,7 +2,7 @@
 
 # consul-kv
 
-A tiny NPM package for interacting with [Consul KV store](https://www.consul.io/api/kv.html).
+A tiny NPM package providing a Promise-based interface to [Consul KV store](https://www.consul.io/api/kv.html).
 
 ## Using this thing
 
@@ -24,23 +24,23 @@ var consul = new Consul({
 
 ### Usage
 
-Read a key:
-
-```javascript
-consul.get('my/key')
-  .then(value => {
-    console.log(value);
-  }, rejectedErr => {
-    console.log(rejectedErr);
-  });
-```
-
 Create or update a key:
 
 ```javascript
 consul.set('my/key', 'my-key-value')
   .then(respBody => {
     console.log(respBody);
+  }, rejectedErr => {
+    console.log(rejectedErr);
+  });
+```
+
+Read a key:
+
+```javascript
+consul.get('my/key')
+  .then(value => {
+    console.log(value);
   }, rejectedErr => {
     console.log(rejectedErr);
   });
