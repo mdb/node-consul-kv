@@ -13,7 +13,7 @@ class Consul {
 
   get(key) {
     return new Promise((fulfill, reject) => {
-      this.makeRequest({
+      this.request({
         key: key
       }).then(resp => {
         fulfill(new Buffer.from(JSON.parse(resp.body)[0].Value, 'base64').toString('utf-8'));
@@ -25,7 +25,7 @@ class Consul {
 
   set(key, value) {
     return new Promise((fulfill, reject) => {
-      this.makeRequest({
+      this.request({
         key: key,
         body: value,
         method: 'put'
@@ -39,7 +39,7 @@ class Consul {
 
   delete(key) {
     return new Promise((fulfill, reject) => {
-      this.makeRequest({
+      this.request({
         key: key,
         method: 'delete'
       }).then(resp => {
@@ -50,7 +50,7 @@ class Consul {
     });
   }
 
-  makeRequest(opts) {
+  request(opts) {
     let config = this.config;
 
     return new Promise((fulfill, reject) => {

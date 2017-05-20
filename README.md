@@ -57,6 +57,20 @@ consul.delete('my/key')
   });
 ```
 
+Bonus: issue your own requests & get the raw response:
+
+```
+consul.request({
+  key: 'my/key',
+  body: 'my-value-or-optional-request-body',
+  method: 'put'
+}).then(resp => {
+  console.log(resp);
+}, rejected => {
+  reject(rejected);
+});
+```
+
 ## Development
 
 Install dependencies & run tests:
