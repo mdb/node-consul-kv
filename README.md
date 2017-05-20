@@ -1,6 +1,6 @@
 # consul-kv
 
-A tiny Node.js package for interacting with [Consul KV store](https://www.consul.io/api/kv.html).
+A tiny NPM package for interacting with [Consul KV store](https://www.consul.io/api/kv.html).
 
 ## Using this thing
 
@@ -53,4 +53,13 @@ consul.delete('my/key')
   }, rejectedErr => {
     console.log(rejectedErr);
   });
+```
+
+## Development
+
+Install dependencies & run tests:
+
+```
+npm install
+npm test
 ```
