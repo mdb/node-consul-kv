@@ -57,7 +57,7 @@ class Consul {
       request({
         url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}`,
         method: opts.method || 'get',
-        strictSSL: false,
+        strictSSL: config.strictSSL,
         agentOptions: {
           cert: config.tlsCert,
           key: config.tlsKey
