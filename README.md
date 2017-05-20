@@ -14,7 +14,7 @@ var consul = new Consul({
   token: 'my-acl-token', // required
   tlsCert: '<your-cert>', // required
   tlsKey: '<your-cert-key>', // required
-  port: 'my-consul.com', // defaults to '8500'
+  port: '8500', // defaults to '8500'
   protocol: 'https', // defaults to 'https'
   strictSSL: true, // defaults to true
 });
