@@ -59,7 +59,7 @@ consul.delete('my/key')
 
 Bonus: issue your own requests & get the raw response:
 
-```
+```javascript
 consul.request({
   key: 'my/key',
   body: 'my-value-or-optional-request-body',
