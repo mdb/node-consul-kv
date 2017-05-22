@@ -20,6 +20,12 @@ function mockGet() {
     }]);
 }
 
+function mockGet404() {
+  return nock(host)
+    .get(endpoint)
+    .reply(404, []);
+}
+
 function mockPut() {
   return nock(host)
     .put(endpoint, 'my-value')
@@ -62,6 +68,19 @@ describe('get', () => {
       consul.get('my/key')
         .then(val => {
           assert.equal(JSON.parse(val.responseBody)[0].Value, 'bXktdmFsdWU=');
+
+          done();
+        });
+    });
+  });
+
+  describe('when it 404s', () => {
+   it('reports the value as undefined', (done) => {
+      mockGet404();
+
+      consul.get('my/key')
+        .then(val => {
+          assert.equal(val.value, undefined);
 
           done();
         });
