@@ -44,6 +44,28 @@ describe('get', () => {
           done();
         });
     });
+
+    it('returns the status code of the response', (done) => {
+      mockGet();
+
+      consul.get('my/key')
+        .then(val => {
+          assert.equal(val.responseStatus, 200);
+
+          done();
+        });
+    });
+
+    it('returns the body of the response', (done) => {
+      mockGet();
+
+      consul.get('my/key')
+        .then(val => {
+          assert.equal(JSON.parse(val.responseBody)[0].Value, 'bXktdmFsdWU=');
+
+          done();
+        });
+    });
   });
 });
 
