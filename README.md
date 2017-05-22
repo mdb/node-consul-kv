@@ -39,8 +39,10 @@ Read a key:
 
 ```javascript
 consul.get('my/key')
-  .then(value => {
-    console.log(value);
+  .then(result => {
+    console.log(result.value); // the key's value; undefined if it doesn't exist
+    console.log(result.responseStatus); // the HTTP status code of the Consul response
+    console.log(result.responseBody); // the HTTP body of the Consul response
   }, rejectedErr => {
     console.log(rejectedErr);
   });
