@@ -33,15 +33,17 @@ function mockDelete() {
 }
 
 describe('get', () => {
-  it('returns the decoded value for the key it is passed', (done) => {
-    mockGet();
+  describe('when it 200s', () => {
+    it('returns the decoded value for the key it is passed', (done) => {
+      mockGet();
 
-    consul.get('my/key')
-      .then(val => {
-        assert.equal(val, 'my-value');
+      consul.get('my/key')
+        .then(val => {
+          assert.equal(val.value, 'my-value');
 
-        done();
-      });
+          done();
+        });
+    });
   });
 });
 

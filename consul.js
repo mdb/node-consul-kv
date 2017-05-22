@@ -16,7 +16,11 @@ class Consul {
       this.request({
         key: key
       }).then(resp => {
-        fulfill(new Buffer.from(JSON.parse(resp.body)[0].Value, 'base64').toString('utf-8'));
+        fulfill({
+          responseStatus: resp.statusCode,
+          responseBody: resp.body,
+          value: resp.statusCode === 200 ? new Buffer.from(JSON.parse(resp.body)[0].Value, 'base64').toString('utf-8') : undefined
+        });
       }, rejected => {
         reject(rejected);
       });
