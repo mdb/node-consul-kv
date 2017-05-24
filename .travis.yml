@@ -1,4 +1,18 @@
 language: node_js
 
 node_js:
-  - 7.10
+- 7.1
+
+deploy:
+  provider: npm
+  email: mikedball@gmail.com
+  api_key:
+    secure: MMhk0B9VskSS+vzD8C6IhA+FHoiWscZWfabPP/Wpt2WOeRa+gU2Mco7ILfIbAkf0oqZ2Rybn3wTsmwpoBVYNPBe1VkYmxTXHE2yz4zE5W1NAOCm/zIMs3DyWXXZQQIzxcWwQQFvherUTD2H6GbKlDAkc8UqdAmT3JMbwOx93GZ0r9Q2DeTAspieVq0/nrH2/5m8Pnc/z3EJrnXmTJH6bHi35lEV0oYF0qmvdWMzxvtLAH56woQI+5UIIJ5VpYn/GhI4c4hdVCE+z0OpTQXOSPEaO4DUF8WkWgOgU/sKy0BO8ehFtRYoew+9JHuQtqpBHMgzH6S+VGhMa9vFnjm/UIjJgqxiKRxWOhTeIcV4eYAzFpIoiKpP1CInFCYRsjJSw4Tjin4PBChpDZB4Q+cJgM8fbyRGMaiA93Q9oh5A4NUcc3Fu9olmCUhvPVBwe4oq4QRiLerwNgjFpgw9gzRdQzHxYeySkAvv4OgfTkdYtbMsH179BpDZTyPh9bjLJuJxqPJdkfpxJOcL04FogWYFNG0B4buHG8GkFX3xhwRLUfsVIIQIlMz8sanBBGDXWTizYulM2FepKDi5qzatBoA4aOANmRVC6wPDmXpziGpVfdrjddZ9EQhaWHnoBOzWmYUaBpPgP+MIxjKFdXTarTPUCohii+9QUL3KXrrfAyriTb5A=
+  on:
+    tags: true
+    repo: mdb/node-consul-kv
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
