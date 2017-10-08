@@ -75,7 +75,7 @@ describe('get', () => {
   });
 
   describe('when it 404s', () => {
-   it('reports the value as undefined', (done) => {
+    it('reports the value as undefined', (done) => {
       mockGet404();
 
       consul.get('my/key')
