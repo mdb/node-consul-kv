@@ -12,9 +12,11 @@ const consul = new Consul({
 const host = `https://${consulHost}:8500`;
 const endpoint = '/v1/kv/my/key?token=my-token';
 
-function mockGet() {
+function mockGet(query) {
+  let url = query ? `${endpoint}${query}` : endpoint;
+
   return nock(host)
-    .get(endpoint)
+    .get(url)
     .reply(200, [{
       Value: 'bXktdmFsdWU='
     }]);
@@ -61,6 +63,20 @@ describe('get', () => {
           done();
         });
     });
+
+    describe('when it is passed the option to recursively return the entire subtree', () => {
+      it('adds "?recurse" to the request it makes', (done) => {
+        mockGet('&recurse');
+
+        consul.get('my/key', { recurse: true })
+          .then(val => {
+            assert.equal(val.value, 'my-value');
+
+            done();
+          });
+      });
+    });
+
 
     it('returns the body of the response', (done) => {
       mockGet();

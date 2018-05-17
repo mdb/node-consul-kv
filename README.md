@@ -48,6 +48,19 @@ consul.get('my/key')
   });
 ```
 
+Read a the full subtree below a key (this adds a `?recurse` query to the request, per [Consul documentation](https://www.consul.io/api/kv.html)):
+
+```javascript
+consul.get('my/key', { recurse: true })
+  .then(result => {
+    console.log(result); // the entire 'my/key' subtree
+    console.log(result.responseStatus); // the HTTP status code of the Consul response
+    console.log(result.responseBody); // the HTTP body of the Consul response
+  }, rejectedErr => {
+    console.log(rejectedErr);
+  });
+```
+
 Delete a key:
 
 ```javascript

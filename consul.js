@@ -11,11 +11,11 @@ class Consul {
     }, opts);
   }
 
-  get(key) {
+  get(key, opts) {
     return new Promise((fulfill, reject) => {
-      this.request({
+      this.request(Object.assign({
         key: key
-      }).then(resp => {
+      }, opts)).then(resp => {
         fulfill({
           responseStatus: resp.statusCode,
           responseBody: resp.body,
@@ -59,7 +59,7 @@ class Consul {
 
     return new Promise((fulfill, reject) => {
       request({
-        url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}`,
+        url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}`,
         method: opts.method || 'get',
         strictSSL: config.strictSSL,
         agentOptions: {
