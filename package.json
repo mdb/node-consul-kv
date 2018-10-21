@@ -9,7 +9,7 @@
   "author": "Mike Ball",
   "license": "MIT",
   "dependencies": {
-    "request": "2.81.0"
+    "request": "2.88.0"
   },
   "devDependencies": {
     "eslint": "^4.8.0",
