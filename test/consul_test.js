@@ -77,6 +77,18 @@ describe('get', () => {
       });
     });
 
+    describe('when it is passed the option to speicfy the datacenter to query', () => {
+      it('adds "?dc=my-dc" to the request it makes', (done) => {
+        mockGet('&dc=my-dc');
+
+        consul.get('my/key', { dc: 'my-dc' })
+          .then(val => {
+            assert.equal(val.value, 'my-value');
+
+            done();
+          });
+      });
+    });
 
     it('returns the body of the response', (done) => {
       mockGet();
