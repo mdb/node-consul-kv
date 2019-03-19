@@ -56,10 +56,9 @@ class Consul {
 
   request(opts) {
     let config = this.config;
-
     return new Promise((fulfill, reject) => {
       request({
-        url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}`,
+        url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
         method: opts.method || 'get',
         strictSSL: config.strictSSL,
         agentOptions: {
