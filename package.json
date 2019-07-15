@@ -4,7 +4,7 @@
   "description": "A micro library to get, set, and delete Consul K/V",
   "main": "consul.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha && ./node_modules/.bin/eslint *.js test/*.js"
+    "test": "mocha && eslint *.js test/*.js"
   },
   "author": "Mike Ball",
   "license": "MIT",
@@ -12,8 +12,8 @@
     "request": "2.88.0"
   },
   "devDependencies": {
-    "eslint": "^5.7.0",
-    "mocha": "5.2.0",
-    "nock": "10.0.1"
+    "eslint": "6.0.1",
+    "mocha": "6.1.4",
+    "nock": "10.0.6"
   }
 }
