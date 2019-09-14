@@ -1,10 +1,12 @@
 {
   "name": "consul-kv",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A micro library to get, set, and delete Consul K/V",
   "main": "consul.js",
   "scripts": {
-    "test": "mocha && eslint *.js test/*.js"
+    "test": "mocha && eslint *.js test/*.js",
+    "tag": "git tag $npm_package_version && git push origin $npm_package_version",
+    "publish": "npm run tag && npm publish"
   },
   "author": "Mike Ball",
   "license": "MIT",
