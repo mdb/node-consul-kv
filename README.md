@@ -4,7 +4,7 @@
 
 A tiny NPM package providing a Promise-based interface to [Consul KV store](https://www.consul.io/api/kv.html).
 
-## Using this thing
+## Using consul-kv
 
 ### Instantiating:
 
@@ -13,12 +13,13 @@ var Consul = require('consul-kv');
 
 var consul = new Consul({
   host: 'my-consul.com', // required
-  token: 'my-acl-token', // required
-  tlsCert: '<your-cert>', // required
-  tlsKey: '<your-cert-key>', // required
-  port: '8500', // defaults to '8500'
-  protocol: 'https', // defaults to 'https'
-  strictSSL: true, // defaults to true
+  token: 'my-acl-token', // optional
+  tlsCert: '<your-cert>', // optional
+  tlsKey: '<your-cert-key>', // optional
+  ca: '<your-ca-cert>', // optional
+  port: '8500', // optional; defaults to '8500'
+  protocol: 'https', // optional; defaults to 'https'
+  strictSSL: true, // optional; defaults to true
 });
 ```
 
