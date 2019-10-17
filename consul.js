@@ -63,7 +63,8 @@ class Consul {
         strictSSL: config.strictSSL,
         agentOptions: {
           cert: config.tlsCert,
-          key: config.tlsKey
+          key: config.tlsKey,
+          ca: config.ca
         },
         body: opts.body
       }, (err, resp) => {
