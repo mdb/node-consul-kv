@@ -1,7 +1,7 @@
 language: node_js
 
 node_js:
-- 10.6.0
+- 18.12.1
 
 deploy:
   provider: npm
