@@ -9,9 +9,9 @@ A tiny NPM package providing a Promise-based interface to [Consul KV store](http
 ### Instantiating:
 
 ```javascript
-var Consul = require('consul-kv');
+const Consul = require('consul-kv');
 
-var consul = new Consul({
+const consul = new Consul({
   host: 'my-consul.com', // required
   token: 'my-acl-token', // optional
   tlsCert: '<your-cert>', // optional
