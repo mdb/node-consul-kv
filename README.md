@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/mdb/node-consul-kv.svg?branch=master)](https://travis-ci.org/mdb/node-consul-kv)
-
 # consul-kv
 
 A tiny NPM package providing a Promise-based interface to [Consul KV store](https://www.consul.io/api/kv.html).
