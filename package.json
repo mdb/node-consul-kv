@@ -1,6 +1,6 @@
 {
   "name": "consul-kv",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A micro library to get, set, and delete Consul K/V",
   "main": "consul.js",
   "scripts": {
