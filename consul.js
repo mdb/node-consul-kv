@@ -57,24 +57,16 @@ class Consul {
   request(opts) {
     const config = this.config;
 
-    return new Promise((fulfill, reject) => {
-      axios({
-        url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
-        method: opts.method || 'get',
-        strictSSL: config.strictSSL,
-        agentOptions: {
-          cert: config.tlsCert,
-          key: config.tlsKey,
-          ca: config.ca
-        },
-        data: opts.body
-      })
-        .then(resp => {
-          fulfill(resp);
-        })
-        .catch(err => {
-          reject(err);
-        });
+    return axios({
+      url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
+      method: opts.method || 'get',
+      strictSSL: config.strictSSL,
+      agentOptions: {
+        cert: config.tlsCert,
+        key: config.tlsKey,
+        ca: config.ca
+      },
+      data: opts.body
     });
   }
 }
