@@ -1,3 +1,5 @@
+[![cicd](https://github.com/mdb/node-consul-kv/actions/workflows/cicd.yaml/badge.svg)](https://github.com/mdb/node-consul-kv/actions/workflows/cicd.yaml)
+
 # consul-kv
 
 A tiny NPM package providing a Promise-based interface to [Consul KV store](https://www.consul.io/api/kv.html).
