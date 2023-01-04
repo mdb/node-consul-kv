@@ -6,7 +6,7 @@ on:
   push:
 
 jobs:
-  test:
+  lint-and-unit-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,8 +16,18 @@ jobs:
       - run: npm install
       - run: npm test
 
+  local-end-to-end-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.5.1
+        with:
+          node-version-file: '.nvmrc'
+      - run: docker-compose up&
+      - run: npm run test:e2e
+
   validate-version:
-    needs: test
+    needs: local-end-to-end-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

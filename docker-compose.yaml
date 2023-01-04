@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+  consul:
+    image: hashicorp/consul:latest
+    container_name: consul
+    restart: always
+    ports:
+      - "8500:8500"
+    command: "agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect=1"
