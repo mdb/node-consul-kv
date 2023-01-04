@@ -6,7 +6,6 @@ class Consul {
     this.config = Object.assign({
       port: '8500',
       protocol: 'https',
-      strictSSL: true
     }, opts);
   }
 
@@ -47,7 +46,6 @@ class Consul {
     const requestOptions = {
       url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
       method: opts.method || 'get',
-      strictSSL: config.strictSSL,
       data: opts.body
     };
 

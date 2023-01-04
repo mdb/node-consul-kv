@@ -19,7 +19,6 @@ const consul = new Consul({
   ca: '<your-ca-cert>', // optional
   port: '8500', // optional; defaults to '8500'
   protocol: 'https', // optional; defaults to 'https'
-  strictSSL: true, // optional; defaults to true
 });
 ```
 
