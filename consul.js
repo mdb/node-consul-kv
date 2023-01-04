@@ -31,17 +31,13 @@ class Consul {
     return resp.data;
   }
 
-  delete(key) {
-    return new Promise((fulfill, reject) => {
-      this.request({
-        key: key,
-        method: 'delete'
-      }).then(resp => {
-        fulfill(resp.data);
-      }, rejected => {
-        reject(rejected);
-      });
+  async delete(key) {
+    const resp = await this.request({
+      key: key,
+      method: 'delete'
     });
+
+    return resp.data;
   }
 
   request(opts) {
