@@ -1,5 +1,3 @@
-'use strict';
-
 const axios = require('axios');
 
 class Consul {
@@ -11,20 +9,16 @@ class Consul {
     }, opts);
   }
 
-  get(key, opts) {
-    return new Promise((fulfill, reject) => {
-      this.request(Object.assign({
-        key: key
-      }, opts)).then(resp => {
-        fulfill({
-          responseStatus: resp.status,
-          responseBody: resp.data,
-          value: resp.status === 200 ? new Buffer.from(resp.data[0].Value, 'base64').toString('utf-8') : undefined
-        });
-      }, rejected => {
-        reject(rejected);
-      });
-    });
+  async get(key, opts) {
+    const resp = await this.request(Object.assign({
+      key: key
+    }, opts));
+
+    return {
+      responseStatus: resp.status,
+      responseBody: resp.data,
+      value: new Buffer.from(resp.data[0].Value, 'base64').toString('utf-8')
+    };
   }
 
   set(key, value) {
