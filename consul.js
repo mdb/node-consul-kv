@@ -21,18 +21,14 @@ class Consul {
     };
   }
 
-  set(key, value) {
-    return new Promise((fulfill, reject) => {
-      this.request({
-        key: key,
-        body: value,
-        method: 'put'
-      }).then(resp => {
-        fulfill(resp.data);
-      }, rejected => {
-        reject(rejected);
-      });
+  async set(key, value) {
+    const resp = await this.request({
+      key: key,
+      body: value,
+      method: 'put'
     });
+
+    return resp.data;
   }
 
   delete(key) {
