@@ -13,7 +13,7 @@ const host = `https://${consulHost}:8500`;
 const endpoint = '/v1/kv/my/key?token=my-token';
 
 function mockGet(query) {
-  let url = query ? `${endpoint}${query}` : endpoint;
+  const url = query ? `${endpoint}${query}` : endpoint;
 
   return nock(host)
     .get(url)

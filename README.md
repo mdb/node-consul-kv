@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mdb/node-consul-kv.svg?branch=master)](https://travis-ci.org/mdb/node-consul-kv)
+[![cicd](https://github.com/mdb/node-consul-kv/actions/workflows/cicd.yaml/badge.svg)](https://github.com/mdb/node-consul-kv/actions/workflows/cicd.yaml)
 
 # consul-kv
 
@@ -9,9 +9,9 @@ A tiny NPM package providing a Promise-based interface to [Consul KV store](http
 ### Instantiating:
 
 ```javascript
-var Consul = require('consul-kv');
+const Consul = require('consul-kv');
 
-var consul = new Consul({
+const consul = new Consul({
   host: 'my-consul.com', // required
   token: 'my-acl-token', // optional
   tlsCert: '<your-cert>', // optional

@@ -1,6 +1,6 @@
 {
   "name": "consul-kv",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A micro library to get, set, and delete Consul K/V",
   "main": "consul.js",
   "scripts": {
@@ -11,11 +11,11 @@
   "author": "Mike Ball",
   "license": "MIT",
   "dependencies": {
-    "request": "2.88.0"
+    "request": "2.88.2"
   },
   "devDependencies": {
-    "eslint": "6.4.0",
-    "mocha": "6.2.0",
-    "nock": "11.3.4"
+    "eslint": "8.31.0",
+    "mocha": "^10.2.0",
+    "nock": "13.2.9"
   }
 }
