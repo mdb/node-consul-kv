@@ -1,6 +1,6 @@
 'use strict';
 
-const request = require('request');
+const axios = require('axios');
 
 class Consul {
   constructor(opts) {
@@ -17,9 +17,9 @@ class Consul {
         key: key
       }, opts)).then(resp => {
         fulfill({
-          responseStatus: resp.statusCode,
-          responseBody: resp.body,
-          value: resp.statusCode === 200 ? new Buffer.from(JSON.parse(resp.body)[0].Value, 'base64').toString('utf-8') : undefined
+          responseStatus: resp.status,
+          responseBody: resp.data,
+          value: resp.status === 200 ? new Buffer.from(resp.data[0].Value, 'base64').toString('utf-8') : undefined
         });
       }, rejected => {
         reject(rejected);
@@ -34,7 +34,7 @@ class Consul {
         body: value,
         method: 'put'
       }).then(resp => {
-        fulfill(resp.body);
+        fulfill(resp.data);
       }, rejected => {
         reject(rejected);
       });
@@ -47,7 +47,7 @@ class Consul {
         key: key,
         method: 'delete'
       }).then(resp => {
-        fulfill(resp.body);
+        fulfill(resp.data);
       }, rejected => {
         reject(rejected);
       });
@@ -58,7 +58,7 @@ class Consul {
     const config = this.config;
 
     return new Promise((fulfill, reject) => {
-      request({
+      axios({
         url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
         method: opts.method || 'get',
         strictSSL: config.strictSSL,
@@ -67,12 +67,14 @@ class Consul {
           key: config.tlsKey,
           ca: config.ca
         },
-        body: opts.body
-      }, (err, resp) => {
-        if (err) reject(err);
-
-        fulfill(resp);
-      });
+        data: opts.body
+      })
+        .then(resp => {
+          fulfill(resp);
+        })
+        .catch(err => {
+          reject(err);
+        });
     });
   }
 }

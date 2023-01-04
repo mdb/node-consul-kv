@@ -95,7 +95,7 @@ describe('get', () => {
 
       consul.get('my/key')
         .then(val => {
-          assert.equal(JSON.parse(val.responseBody)[0].Value, 'bXktdmFsdWU=');
+          assert.equal(val.responseBody[0].Value, 'bXktdmFsdWU=');
 
           done();
         });
@@ -103,12 +103,12 @@ describe('get', () => {
   });
 
   describe('when it 404s', () => {
-    it('reports the value as undefined', (done) => {
+    it('throws an error', (done) => {
       mockGet404();
 
       consul.get('my/key')
-        .then(val => {
-          assert.equal(val.value, undefined);
+        .catch(err => {
+          assert.equal(err.code, 'ERR_BAD_REQUEST');
 
           done();
         });
@@ -122,7 +122,7 @@ describe('set', () => {
 
     consul.set('my/key', 'my-value')
       .then(result => {
-        assert.equal(result, 'true');
+        assert.equal(result, true);
 
         done();
       });
@@ -135,7 +135,7 @@ describe('delete', () => {
 
     consul.delete('my/key')
       .then(result => {
-        assert.equal(result, 'true');
+        assert.equal(result, true);
 
         done();
       });
