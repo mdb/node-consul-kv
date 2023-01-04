@@ -17,13 +17,15 @@ jobs:
       - run: npm test
 
   local-end-to-end-test:
+    needs: lint-and-unit-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.5.1
         with:
           node-version-file: '.nvmrc'
-      - run: docker-compose up&
+      - run: docker-compose up
+      - run: sleep 20
       - run: npm install
       - run: npm run test:e2e
 
