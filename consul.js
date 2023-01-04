@@ -1,3 +1,4 @@
+const https = require('https');
 const axios = require('axios');
 
 class Consul {
@@ -10,7 +11,7 @@ class Consul {
   }
 
   async get(key, opts) {
-    const resp = await this.request(Object.assign({
+    const resp = await this._request(Object.assign({
       key: key
     }, opts));
 
@@ -22,7 +23,7 @@ class Consul {
   }
 
   async set(key, value) {
-    const resp = await this.request({
+    const resp = await this._request({
       key: key,
       body: value,
       method: 'put'
@@ -32,7 +33,7 @@ class Consul {
   }
 
   async delete(key) {
-    const resp = await this.request({
+    const resp = await this._request({
       key: key,
       method: 'delete'
     });
@@ -40,20 +41,25 @@ class Consul {
     return resp.data;
   }
 
-  request(opts) {
+  _request(opts) {
     const config = this.config;
 
-    return axios({
+    const requestOptions = {
       url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
       method: opts.method || 'get',
       strictSSL: config.strictSSL,
-      agentOptions: {
+      data: opts.body
+    };
+
+    if (config.tlsCert) {
+      requestOptions.httpsAgent = new https.Agent({
         cert: config.tlsCert,
         key: config.tlsKey,
         ca: config.ca
-      },
-      data: opts.body
-    });
+      });
+    }
+
+    return axios(requestOptions);
   }
 }
 
