@@ -8,3 +8,9 @@ services:
     ports:
       - "8500:8500"
     command: "agent -server -bind 0.0.0.0 -client 0.0.0.0 -bootstrap-expect=1"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      interval: 1m
+      timeout: 5s
+      retries: 3
+      start_period: 40s

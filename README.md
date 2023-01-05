@@ -88,9 +88,16 @@ consul.request({
 
 ## Development
 
-Install dependencies & run tests:
+Install dependencies & run unit tests:
 
 ```
 npm install
 npm test
+```
+
+Run end-to-end tests against a local Consul using [docker-compose](https://docs.docker.com/compose/):
+
+```
+docker-compose up --detach
+npm run test:e2e
 ```
