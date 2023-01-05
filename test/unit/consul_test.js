@@ -77,7 +77,7 @@ describe('get', () => {
       });
     });
 
-    describe('when it is passed the option to speicfy the datacenter to query', () => {
+    describe('when it is passed an option specifying the specific datacenter to query', () => {
       it('adds "?dc=my-dc" to the request it makes', (done) => {
         mockGet('&dc=my-dc');
 
