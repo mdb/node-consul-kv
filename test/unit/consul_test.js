@@ -41,103 +41,161 @@ function mockDelete() {
 }
 
 describe('get', () => {
-  describe('when it 200s', () => {
-    it('returns the decoded value for the key it is passed', (done) => {
+  describe('when Consul responses with an HTTP 200', () => {
+    let val;
+    let err;
+
+    beforeEach(async () => {
       mockGet();
 
-      consul.get('my/key')
-        .then(val => {
-          assert.equal(val.value, 'my-value');
-
-          done();
-        });
+      try {
+        val = await consul.get('my/key');
+      } catch(e) {
+        err = e;
+      }
     });
 
-    it('returns the status code of the response', (done) => {
-      mockGet();
+    afterEach(() => {
+      val = undefined;
+      err = undefined;
+    });
 
-      consul.get('my/key')
-        .then(val => {
-          assert.equal(val.responseStatus, 200);
+    it('does not error', () => {
+      assert.equal(err, undefined);
+    });
 
-          done();
-        });
+    it('returns the decoded value for the key it is passed', () => {
+      assert.equal(val.value, 'my-value');
+    });
+
+    it('returns the status code of the response', () => {
+      assert.equal(val.responseStatus, 200);
+    });
+
+    it('returns the body of the response', () => {
+      assert.equal(val.responseBody[0].Value, 'bXktdmFsdWU=');
     });
 
     describe('when it is passed the option to recursively return the entire subtree', () => {
-      it('adds "?recurse" to the request it makes', (done) => {
+      beforeEach(async () => {
         mockGet('&recurse');
 
-        consul.get('my/key', { recurse: true })
-          .then(val => {
-            assert.equal(val.value, 'my-value');
+        try {
+          val = await consul.get('my/key', { recurse: true });
+        } catch(e) {
+          err = e;
+        }
+      });
 
-            done();
-          });
+      it('does not error', () => {
+        assert.equal(err, undefined);
+      });
+
+      it('adds "?recurse" to the request it makes and returns the decoded value for the specified key', () => {
+        assert.equal(val.value, 'my-value');
       });
     });
 
     describe('when it is passed an option specifying the specific datacenter to query', () => {
-      it('adds "?dc=my-dc" to the request it makes', (done) => {
+      beforeEach(async () => {
         mockGet('&dc=my-dc');
 
-        consul.get('my/key', { dc: 'my-dc' })
-          .then(val => {
-            assert.equal(val.value, 'my-value');
-
-            done();
-          });
+        try {
+          val = await consul.get('my/key', { dc: 'my-dc' });
+        } catch(e) {
+          err = e;
+        }
       });
-    });
 
-    it('returns the body of the response', (done) => {
-      mockGet();
+      it('does not error', () => {
+        assert.equal(err, undefined);
+      });
 
-      consul.get('my/key')
-        .then(val => {
-          assert.equal(val.responseBody[0].Value, 'bXktdmFsdWU=');
-
-          done();
-        });
+      it('adds "?dc=my-dc" to the request it makes and returns the decoded value of the specified key', () => {
+        assert.equal(val.value, 'my-value');
+      });
     });
   });
 
-  describe('when it 404s', () => {
-    it('throws an error', (done) => {
+  describe('when Consul responses with an HTTP 404', () => {
+    let err;
+
+    beforeEach(async () => {
       mockGet404();
 
-      consul.get('my/key')
-        .catch(err => {
-          assert.equal(err.code, 'ERR_BAD_REQUEST');
+      try {
+        await consul.get('my/key');
+      } catch(e) {
+        err = e;
+      }
+    });
 
-          done();
-        });
+    afterEach(() => {
+      err = undefined;
+    });
+
+    it('throws an error', () => {
+      assert.equal(err.code, 'ERR_BAD_REQUEST');
     });
   });
 });
 
 describe('set', () => {
-  it('sets the key/value it is passed', (done) => {
-    mockPut();
+  describe('when Consul responses with an HTTP 200', () => {
+    let result;
+    let err;
 
-    consul.set('my/key', 'my-value')
-      .then(result => {
-        assert.equal(result, true);
+    beforeEach(async () => {
+      mockPut();
 
-        done();
-      });
+      try {
+        result = await consul.set('my/key', 'my-value');
+      } catch(e) {
+        err = e;
+      }
+    });
+
+    afterEach(() => {
+      result = undefined;
+      err = undefined;
+    });
+
+    it('does not error', () => {
+      assert.equal(err, undefined);
+    });
+
+    it('sets the key/value it is passed', () => {
+      assert.equal(result, true);
+    });
   });
 });
 
 describe('delete', () => {
-  it('deletes the key/value it is passed', (done) => {
-    mockDelete();
+  describe('when Consul responses with an HTTP 200', () => {
+    let result;
+    let err;
 
-    consul.delete('my/key')
-      .then(result => {
-        assert.equal(result, true);
+    beforeEach(async () => {
+      mockDelete();
 
-        done();
-      });
+      try {
+        result = await consul.delete('my/key');
+      } catch(e) {
+        err = e;
+      }
+    });
+
+    afterEach(() => {
+      result = undefined;
+      err = undefined;
+    });
+
+    it('does not error', () => {
+      assert.equal(err, undefined);
+    });
+
+    it('deletes the key/value it is passed', () => {
+      assert.equal(result, true);
+    });
   });
 });
