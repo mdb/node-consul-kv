@@ -6,31 +6,23 @@ on:
   push:
 
 jobs:
-  lint-and-unit-test:
+  test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.5.1
         with:
           node-version-file: '.nvmrc'
-      - run: npm install
-      - run: npm test
-
-  local-end-to-end-test:
-    needs: lint-and-unit-test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3.5.1
-        with:
-          node-version-file: '.nvmrc'
+      - run: npm ci
+      - name: Lint and run unit tests
+        run: npm test
       - run: docker-compose up --detach
-      - run: sleep 20
-      - run: npm install
-      - run: npm run test:e2e
+      - run: sleep 10
+      - name: Run e2e tests
+        run: npm run test:e2e
 
   validate-version:
-    needs: local-end-to-end-test
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
