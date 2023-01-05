@@ -6,76 +6,131 @@ const consul = new Consul({
 });
 
 describe('set', () => {
-  it('sets the key/value it is passed', (done) => {
-    consul.set('my/key', 'my-value')
-      .then(result => {
-        assert.equal(result, true);
+  describe('when Consul responses with an HTTP 200', () => {
+    let result;
+    let err;
 
-        done();
-      });
+    beforeEach(async () => {
+      try {
+        result = await consul.set('my/key', 'my-value');
+      } catch(e) {
+        err = e;
+      }
+    });
+
+    afterEach(() => {
+      result = undefined;
+      err = undefined;
+    });
+
+    it('does not error', () => {
+      assert.equal(err, undefined);
+    });
+
+    it('sets the key/value it is passed', () => {
+      assert.equal(result, true);
+    });
   });
 });
 
 describe('get', () => {
-  describe('when it 200s', () => {
-    it('returns the decoded value for the key it is passed', (done) => {
-      consul.get('my/key')
-        .then(val => {
-          assert.equal(val.value, 'my-value');
+  describe('when Consul responses with an HTTP 200', () => {
+    let val;
+    let err;
 
-          done();
-        });
+    beforeEach(async () => {
+      try {
+        val = await consul.get('my/key');
+      } catch(e) {
+        err = e;
+      }
     });
 
-    it('returns the status code of the response', (done) => {
-      consul.get('my/key')
-        .then(val => {
-          assert.equal(val.responseStatus, 200);
+    afterEach(() => {
+      val = undefined;
+      err = undefined;
+    });
 
-          done();
-        });
+    it('does not error', () => {
+      assert.equal(err, undefined);
+    });
+
+    it('returns the decoded value for the key it is passed', () => {
+      assert.equal(val.value, 'my-value');
+    });
+
+    it('returns the status code of the response', () => {
+      assert.equal(val.responseStatus, 200);
+    });
+
+    it('returns the body of the response', () => {
+      assert.equal(val.responseBody[0].Value, 'bXktdmFsdWU=');
     });
 
     describe('when it is passed the option to recursively return the entire subtree', () => {
-      it('adds "?recurse" to the request it makes', (done) => {
-        consul.get('my/key', { recurse: true })
-          .then(val => {
-            assert.equal(val.value, 'my-value');
-
-            done();
-          });
+      beforeEach(async () => {
+        try {
+          val = await consul.get('my/key', { recurse: true });
+        } catch(e) {
+          err = e;
+        }
       });
-    });
 
-    it('returns the body of the response', (done) => {
-      consul.get('my/key')
-        .then(val => {
-          assert.equal(val.responseBody[0].Value, 'bXktdmFsdWU=');
+      it('does not error', () => {
+        assert.equal(err, undefined);
+      });
 
-          done();
-        });
+      it('adds "?recurse" to the request it makes and returns the decoded value for the specified key', () => {
+        assert.equal(val.value, 'my-value');
+      });
     });
   });
 
-  describe('when it 404s', () => {
-    it('throws an error', (done) => {
-      consul.get('my/foo')
-        .catch(err => {
-          assert.equal(err.code, 'ERR_BAD_REQUEST');
+  describe('when Consul responses with an HTTP 404', () => {
+    let err;
 
-          done();
-        });
+    beforeEach(async () => {
+      try {
+        await consul.get('my/nonexistent-key');
+      } catch(e) {
+        err = e;
+      }
+    });
+
+    afterEach(() => {
+      err = undefined;
+    });
+
+    it('throws an error', () => {
+      assert.equal(err.code, 'ERR_BAD_REQUEST');
     });
   });
 });
 
 describe('delete', () => {
-  it('deletes the key/value it is passed', (done) => {
-    consul.delete('my/key')
-      .then(result => {
-        assert.equal(result, true);
+  describe('when Consul responses with an HTTP 200', () => {
+    let result;
+    let err;
 
-        done();
-      });
+    beforeEach(async () => {
+      try {
+        result = await consul.delete('my/key');
+      } catch(e) {
+        err = e;
+      }
+    });
+
+    afterEach(() => {
+      result = undefined;
+      err = undefined;
+    });
+
+    it('does not error', () => {
+      assert.equal(err, undefined);
+    });
+
+    it('deletes the key/value it is passed', () => {
+      assert.equal(result, true);
+    });
   });
 });
