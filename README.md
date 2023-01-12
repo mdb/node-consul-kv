@@ -2,7 +2,7 @@
 
 # consul-kv
 
-A tiny NPM package providing a Promise-based interface to [Consul KV store](https://www.consul.io/api/kv.html).
+A tiny NPM package providing a minimal [Consul KV store](https://www.consul.io/api/kv.html) client.
 
 ## Using consul-kv
 
@@ -27,62 +27,42 @@ const consul = new Consul({
 Create or update a key:
 
 ```javascript
-consul.set('my/key', 'my-key-value')
-  .then(respBody => {
-    console.log(respBody);
-  }, rejectedErr => {
-    console.log(rejectedErr);
-  });
+const resp = await consul.set('my/key', 'my-key-value');
 ```
 
 Read a key:
 
 ```javascript
-consul.get('my/key')
-  .then(result => {
-    console.log(result.value); // the key's value; undefined if it doesn't exist
-    console.log(result.responseStatus); // the HTTP status code of the Consul response
-    console.log(result.responseBody); // the HTTP body of the Consul response
-  }, rejectedErr => {
-    console.log(rejectedErr);
-  });
+const result = await consul.get('my/key');
+
+console.log(result.value); // the key's value; undefined if it doesn't exist
+console.log(result.responseStatus); // the HTTP status code of the Consul response
+console.log(result.responseBody); // the HTTP body of the Consul response
 ```
 
 Read a the full subtree below a key (this adds a `?recurse` query to the request, per [Consul documentation](https://www.consul.io/api/kv.html)):
 
 ```javascript
-consul.get('my/key', { recurse: true })
-  .then(result => {
-    console.log(result); // the entire 'my/key' subtree
-    console.log(result.responseStatus); // the HTTP status code of the Consul response
-    console.log(result.responseBody); // the HTTP body of the Consul response
-  }, rejectedErr => {
-    console.log(rejectedErr);
-  });
+const result = await consul.get('my/key', { recurse: true });
+
+console.log(result); // the entire 'my/key' subtree
+console.log(result.responseStatus); // the HTTP status code of the Consul response
+console.log(result.responseBody); // the HTTP body of the Consul response
 ```
 
 Delete a key:
 
 ```javascript
-consul.delete('my/key')
-  .then(respBody => {
-    console.log(respBody);
-  }, rejectedErr => {
-    console.log(rejectedErr);
-  });
+const resp = await consul.delete('my/key');
 ```
 
 Bonus: issue your own requests & get the raw response:
 
 ```javascript
-consul.request({
+const resp = await consul.request({
   key: 'my/key',
   body: 'my-value-or-optional-request-body',
   method: 'put'
-}).then(resp => {
-  console.log(resp);
-}, rejected => {
-  reject(rejected);
 });
 ```
 

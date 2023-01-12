@@ -10,7 +10,7 @@ class Consul {
   }
 
   async get(key, opts) {
-    const resp = await this._request(Object.assign({
+    const resp = await this.request(Object.assign({
       key: key
     }, opts));
 
@@ -22,7 +22,7 @@ class Consul {
   }
 
   async set(key, value) {
-    const resp = await this._request({
+    const resp = await this.request({
       key: key,
       body: value,
       method: 'put'
@@ -32,7 +32,7 @@ class Consul {
   }
 
   async delete(key) {
-    const resp = await this._request({
+    const resp = await this.request({
       key: key,
       method: 'delete'
     });
@@ -40,7 +40,7 @@ class Consul {
     return resp.data;
   }
 
-  _request(opts) {
+  request(opts) {
     const config = this.config;
 
     const requestOptions = {
