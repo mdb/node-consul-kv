@@ -1,15 +1,16 @@
 {
   "name": "consul-kv",
-  "version": "0.1.8",
+  "version": "0.2.0",
   "description": "A micro library to get, set, and delete Consul K/V",
   "main": "consul.js",
   "scripts": {
-    "test": "mocha && eslint *.js test/*.js"
+    "test": "mocha --recursive test/unit --exit && eslint *.js test/*.js",
+    "test:e2e": "mocha --recursive test/e2e"
   },
   "author": "Mike Ball",
   "license": "MIT",
   "dependencies": {
-    "request": "2.88.2"
+    "axios": "1.2.2"
   },
   "devDependencies": {
     "eslint": "8.31.0",

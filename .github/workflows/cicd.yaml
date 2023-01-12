@@ -13,8 +13,13 @@ jobs:
       - uses: actions/setup-node@v3.5.1
         with:
           node-version-file: '.nvmrc'
-      - run: npm install
-      - run: npm test
+      - run: npm ci
+      - name: Lint and run unit tests
+        run: npm test
+      - run: docker-compose up --detach
+      - run: sleep 10
+      - name: Run e2e tests
+        run: npm run test:e2e
 
   validate-version:
     needs: test

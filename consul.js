@@ -1,79 +1,63 @@
-'use strict';
-
-const request = require('request');
+const https = require('https');
+const axios = require('axios');
 
 class Consul {
   constructor(opts) {
     this.config = Object.assign({
       port: '8500',
       protocol: 'https',
-      strictSSL: true
     }, opts);
   }
 
-  get(key, opts) {
-    return new Promise((fulfill, reject) => {
-      this.request(Object.assign({
-        key: key
-      }, opts)).then(resp => {
-        fulfill({
-          responseStatus: resp.statusCode,
-          responseBody: resp.body,
-          value: resp.statusCode === 200 ? new Buffer.from(JSON.parse(resp.body)[0].Value, 'base64').toString('utf-8') : undefined
-        });
-      }, rejected => {
-        reject(rejected);
-      });
-    });
+  async get(key, opts) {
+    const resp = await this._request(Object.assign({
+      key: key
+    }, opts));
+
+    return {
+      responseStatus: resp.status,
+      responseBody: resp.data,
+      value: new Buffer.from(resp.data[0].Value, 'base64').toString('utf-8')
+    };
   }
 
-  set(key, value) {
-    return new Promise((fulfill, reject) => {
-      this.request({
-        key: key,
-        body: value,
-        method: 'put'
-      }).then(resp => {
-        fulfill(resp.body);
-      }, rejected => {
-        reject(rejected);
-      });
+  async set(key, value) {
+    const resp = await this._request({
+      key: key,
+      body: value,
+      method: 'put'
     });
+
+    return resp.data;
   }
 
-  delete(key) {
-    return new Promise((fulfill, reject) => {
-      this.request({
-        key: key,
-        method: 'delete'
-      }).then(resp => {
-        fulfill(resp.body);
-      }, rejected => {
-        reject(rejected);
-      });
+  async delete(key) {
+    const resp = await this._request({
+      key: key,
+      method: 'delete'
     });
+
+    return resp.data;
   }
 
-  request(opts) {
+  _request(opts) {
     const config = this.config;
 
-    return new Promise((fulfill, reject) => {
-      request({
-        url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
-        method: opts.method || 'get',
-        strictSSL: config.strictSSL,
-        agentOptions: {
-          cert: config.tlsCert,
-          key: config.tlsKey,
-          ca: config.ca
-        },
-        body: opts.body
-      }, (err, resp) => {
-        if (err) reject(err);
+    const requestOptions = {
+      url: `${config.protocol}://${config.host}:${config.port}/v1/kv/${opts.key}?token=${config.token}${opts.recurse ? '&recurse' : ''}${opts.dc ? '&dc=' + opts.dc : ''}`,
+      method: opts.method || 'get',
+      data: opts.body
+    };
 
-        fulfill(resp);
+    if (config.tlsCert) {
+      requestOptions.httpsAgent = new https.Agent({
+        cert: config.tlsCert,
+        key: config.tlsKey,
+        ca: config.ca
       });
-    });
+    }
+
+    return axios(requestOptions);
   }
 }
 
