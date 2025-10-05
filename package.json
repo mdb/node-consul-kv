@@ -15,6 +15,6 @@
   "devDependencies": {
     "eslint": "9.37.0",
     "mocha": "^11.7.4",
-    "nock": "13.2.9"
+    "nock": "14.0.10"
   }
 }
