@@ -78,6 +78,6 @@ npm test
 Run end-to-end tests against a local Consul using [docker-compose](https://docs.docker.com/compose/):
 
 ```
-docker-compose up --detach
+docker compose up --detach
 npm run test:e2e
 ```

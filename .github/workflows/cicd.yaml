@@ -16,7 +16,7 @@ jobs:
       - run: npm ci
       - name: Lint and run unit tests
         run: npm test
-      - run: docker-compose up --detach
+      - run: docker compose up --detach
       - run: sleep 10
       - name: Run e2e tests
         run: npm run test:e2e
